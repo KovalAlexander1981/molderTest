@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Suite1" verbose="1">
+    <listeners>
+        <listener class-name="Helpers.AnnotationTransformer"/>
+        <listener class-name="Helpers.StatusTestsListener"/>
+    </listeners>
+    <test name="RegressionAndroid">
+        <classes>
+            <class name="Tests.CreateNewListTest"/>
+            <class name="Tests.EditListTest"/>
+            <class name="Tests.DeleteListTest"/>
+            <class name="Tests.NewListWithProductsTest"/>
+            <class name="Tests.RemoveListWithGoodsTest"/>
+            <class name="Tests.AddGoodsWithoutTest"/>
+            <class name="Tests.InEixstListAddGoodsTest"/>
+            <class name="Tests.RemoveAdditionalInfoOfProductTest"/>
+            <class name="Tests.ChangeCurrencyTest"/>
+            <class name="Tests.AddNewCategoryTest"/>
+            <class name="Tests.ChangeOrientationTest"/>
+        </classes>
+    </test>
+
+</suite>
