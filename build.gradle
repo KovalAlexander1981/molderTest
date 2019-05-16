@@ -14,15 +14,14 @@ dependencies {
     agent "org.aspectj:aspectjweaver:1.8.0"
     testCompile "ru.yandex.qatools.allure:allure-testng-adaptor:1.4.0"
     compile group: 'org.testng', name: 'testng', version: '6.13.1'
-    compile group: 'io.appium', name: 'java-client', version: '6.0.0-BETA4'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.8.1'
 }
 
 test.doFirst { jvmArgs "-javaagent:${configurations.agent.singleFile}" }
 
 
-task androidTest(type:Test) {
-    systemProperty "driver", "android"
+task chromeTest(type:Test) {
+    systemProperty "driver", "chrome"
     useTestNG() {
         scanForTestClasses = false
         suites "testng.xml"

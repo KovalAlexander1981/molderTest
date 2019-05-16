@@ -1,203 +1,125 @@
 package Pages;
 
-import io.appium.java_client.pagefactory.AndroidFindBy;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
-import ru.yandex.qatools.allure.annotations.Description;
+import org.testng.Assert;
 
 import static Helpers.Utils.*;
 
+
+import java.util.Arrays;
 import java.util.List;
 
 public class HomePage extends BasePage {
 
-    @FindBy(name = "Search for a place or address")
-    private WebElement searchField;
+    @FindBy(xpath = "//button[@class='w3-green w3-btn']")
+    private WebElement runSQLButton;
 
-    @FindBy(xpath = "//XCUIElementTypeCell")
-    private List<WebElement> tipsPlacesList;
+    @FindBy(xpath = "//div[@style='margin-bottom:10px;']")
+    private WebElement numberOfRecords;
 
-    @FindBy(xpath = "//XCUIElementTypeButton[@name='Directions']")
-    private WebElement btnDirections;
+    @FindBy(xpath = "//div[@id='divResultSQL']/div")
+    private WebElement changeDataBaseLabel;
 
-    @FindBy(xpath = "//XCUIElementTypeImage")
-    private WebElement cityTextField;
+    @FindBy(xpath = "//div[@id='dbInfo']//button")
+    private WebElement restoreDataBaseButton;
 
-    @FindBy(name = "Route")
-    private WebElement bntRoute;
+    @FindBy(xpath = "//table[@class='w3-table-all notranslate']//tr/th")
+    private List<WebElement> columnName;
 
-    @FindBys(@FindBy(xpath = "//XCUIElementTypeStaticText"))
-    private List<WebElement> getInfoAboutRoute;
+    @FindBy(xpath = "//table[@class='w3-table-all notranslate']//tr/td")
+    private List<WebElement> userDataOrAggregateFunctionResult;
 
-    @AndroidFindBy(id = "com.slava.buylist:id/button1; desc: 'btnPreferences' ")
-    @FindBy(id = "com.slava.buylist:id/button1")
-    private WebElement btnPreferences;
+    public void restoreDataBase() throws InterruptedException {
+        restoreDataBaseButton.click();
+        try {
+            driver.switchTo().alert().accept();
+        } catch (NoAlertPresentException e) {
 
-    @AndroidFindBy(id = "com.slava.buylist:id/editText1")
-    @FindBy(id = "com.slava.buylist:id/editText1")
-    private WebElement textField;
-
-    @AndroidFindBy(id = "com.slava.buylist:id/button2")
-    @FindBy(id = "com.slava.buylist:id/button2")
-    private WebElement btnAdd;
-
-    @AndroidFindBy(id = "com.slava.buylist:id/imageView2")
-    @FindBy(id = "com.slava.buylist:id/imageView2")
-    private WebElement btnEdit;
-
-    @AndroidFindBy(id = "com.slava.buylist:id/title")
-    @FindBy(id = "com.slava.buylist:id/title")
-    private WebElement listName;
-
-    @AndroidFindBy(id = "com.slava.buylist:id/str1")
-    @FindBy(id = "com.slava.buylist:id/str1")
-    private WebElement listInfo;
-
-    @AndroidFindBy(id = "com.slava.buylist:id/imageView1")
-    @FindBys(@FindBy(id = "com.slava.buylist:id/imageView1"))
-    private List<WebElement> listDelete;
-
-    @AndroidFindBy(id = "android:id/button1")
-    @FindBy(id = "android:id/button1")
-    private WebElement Yes;
-
-    @AndroidFindBy(id = "android:id/button2")
-    @FindBy(id = "android:id/button2")
-    private WebElement No;
-
-    @AndroidFindBy(id = "com.slava.buylist:id/title")
-    @FindBys(@FindBy(id = "com.slava.buylist:id/title"))
-    private List<WebElement> listLists;
-
-    @AndroidFindBy(className = "android.widget.EditText")
-    @FindBy(className = "android.widget.EditText")
-    private WebElement listChangeNameField;
-
-    @AndroidFindBy(id = "com.slava.buylist:id/str1")
-    @FindBy(id = "com.slava.buylist:id/str1")
-    private WebElement stringInfoList;
-
-    @AndroidFindBy(id = "com.slava.buylist:id/title")
-    @FindBys(@FindBy(id = "com.slava.buylist:id/title"))
-    private List<WebElement> listOfList;
-
-    @AndroidFindBy(className = "android.widget.LinearLayout")
-    @FindBy(className = "android.widget.LinearLayout")
-    private WebElement settings;
-
-    @AndroidFindBy(id = "com.slava.buylist:id/button2")
-    @FindBy(id = "com.slava.buylist:id/button2")
-    private WebElement exitFromApp;
-
-    @AndroidFindBy(id = "com.slava.buylist:id/button2")
-    @FindBy(id = "com.slava.buylist:id/button2")
-    private WebElement btnDone;
-
-
-    @Description("Search city in the list")
-    public HomePage searchCity(String cityName) {
-        searchField.sendKeys(cityName);
-        return this;
-    }
-
-    public boolean isGetTipsListContains(String city) {
-        return tipsPlacesList.stream().allMatch(s -> s.getText().contains(city));
-    }
-
-    public boolean createRoute(String city) {
-        tipsPlacesList.get(0).click();
-        btnDirections.click();
-        cityTextField.sendKeys(city);
-        bntRoute.click();
-        return getInfoAboutRoute.stream().anyMatch(name -> name.getText().contains("Fastest"));
-    }
-
-
-    public int buylists() {
-        return listLists.size();
-    }
-
-    public boolean isContainList(String name) {
-        return listLists.stream().anyMatch(element -> element.getAttribute("text").matches(name));
-    }
-
-
-    public CreateList createNewList(String listName, String orientation) {
-        textField.sendKeys(listName);
-        if ("Horizontal".equals(orientation)) {
-            tap(0.901, 0.266);
-            tap(0.9, 0.3);
-        } else {
-            btnAdd.click();
         }
-        return new CreateList();
-    }
-
-    public HomePage deleteList() {
-        listDelete.get(1).click();
-        Yes.click();
-        return this;
-    }
-
-    public HomePage renameList(String newNameList) {
-        btnEdit.click();
-        listChangeNameField.clear();
-        listChangeNameField.sendKeys(newNameList);
-        Yes.click();
-        return this;
-    }
-
-    public String infoList() {
-        return stringInfoList.getText();
-    }
-
-    public CreateList openList(String name) {
-        listOfList.stream().filter(item -> item.getText().equals(name)).forEach(item -> item.click());
-        return new CreateList();
-    }
-
-
-    public SettingsPage clickButtonSet() {
-        btnPreferences.click();
-        settings.click();
-        return new SettingsPage();
-    }
-
-
-    public HomePage backButtonZ() {
-        backButton();
-        return this;
-    }
-
-
-    @FindBy(xpath = "//XCUIElementTypeButton[@name=\"Shop\"]")
-    private WebElement ss1;
-
-    @FindBy(xpath = "//XCUIElementTypeStaticText[@name=\"departmentCategories.cell.at.index.0.0.title\"]")
-    private WebElement ss2;
-
-    @FindBy(xpath = "//XCUIElementTypeStaticText[@name=\"departmentCategories.cell.at.index.0.0.title\"]")
-    private WebElement ss3;
-
-    @FindBy(xpath = "//XCUIElementTypeStaticText[@name=\"departmentCategories.cell.at.index.0.0.title\"]")
-    private WebElement ss4;
-
-
-
-    @FindBy(xpath = "//XCUIElementTypeStaticText[@name='productListCell.cellItem.priceView']")
-    private List<WebElement> tips;
-
-
-    public void ddd() throws InterruptedException {
         Thread.sleep(2000);
-        ss1.click();
-        ss2.click();
-        ss3.click();
-        System.out.println(tips.size());
+        Assert.assertEquals(changeDataBaseLabel.getText(), "The database is fully restored.");
+    }
+
+    public HomePage sendQuery(String query) {
+        String queryJS = "window.editor.setValue(\"" + query + ";\")";
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript(queryJS);
+        runSQLButton.click();
+        return this;
+    }
+
+    public HomePage insertNewUserQuery(List userData, String table) {
+        String newUserQuery = "INSERT INTO "+table+" VALUES("+
+                userData.get(0).toString()+" "+
+                userData.get(1).toString()+" "+
+                userData.get(2).toString()+" "+
+                userData.get(3).toString()+" "+
+                userData.get(4).toString()+" "+
+                userData.get(5).toString()+" "+
+                userData.get(6).toString()+")";
+        String queryJS = "window.editor.setValue(\"" + newUserQuery + ";\")";
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript(queryJS);
+        runSQLButton.click();
+        Assert.assertEquals(changeDataBaseLabel.getText(), "You have made changes to the database. Rows affected: 1",
+                "New user  was not added to the base");
+        return this;
+    }
+
+    public HomePage updateUserInfo(List userData, String table) {
+        List<String> columnName = Arrays.asList("CustomerID=", "CustomerName=", "ContactName=", "Address=", "City=", "PostalCode=", "Country=");
+        String newUserQuery = "UPDATE "+table+" SET "+
+                columnName.get(1).toString()+userData.get(1).toString()+" "+
+                columnName.get(2).toString()+userData.get(2).toString()+" "+
+                columnName.get(3).toString()+userData.get(3).toString()+" "+
+                columnName.get(4).toString()+userData.get(4).toString()+" "+
+                columnName.get(5).toString()+userData.get(5).toString()+" "+
+                columnName.get(6).toString()+userData.get(6).toString()+"" +
+                " Where "+columnName.get(0).toString()+userData.get(0).toString().replaceAll("[',]", "").trim()+"";
+        String queryJS = "window.editor.setValue(\"" + newUserQuery + ";\")";
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript(queryJS);
+        runSQLButton.click();
+        Assert.assertEquals(changeDataBaseLabel.getText(), "You have made changes to the database. Rows affected: 1", "User data was not updated in the base");
+        return this;
+    }
+
+    public HomePage checkResultIsPresent() {
+        Assert.assertTrue(numberOfRecords.isDisplayed(), "Result is not showed");
+        return this;
+    }
+
+    public void checkResult(String column, String checkData) {
+        checkListNotNullNorEmpty(columnName);
+        checkListNotNullNorEmpty(userDataOrAggregateFunctionResult);
+
+        for (int i = 0; i < columnName.size(); i++) {
+            if (columnName.get(i).getText().equals(column))
+                 Assert.assertEquals(userDataOrAggregateFunctionResult.get(i).getText(), checkData,
+                         "Data is not the equal"+checkData);
+        }
+    }
+
+    public void checkResultForAggregateFunc(String function, String column, String checkData) {
+        checkListNotNullNorEmpty(columnName);
+        checkListNotNullNorEmpty(userDataOrAggregateFunctionResult);
+        String columnForCheck = function.concat("("+column+")");
+        for (int i = 0; i < columnName.size(); i++) {
+            if (columnName.get(i).getText().equals(columnForCheck))
+                Assert.assertEquals(userDataOrAggregateFunctionResult.get(i).getText(), checkData,
+                        "Data is not the equal"+checkData);
+        }
+    }
+
+    public void checkAllUserInfo(List userInfo) {
+        checkListNotNullNorEmpty(userDataOrAggregateFunctionResult);
+        for (int i = 0; i < userInfo.size(); i++) {
+            Assert.assertEquals(userDataOrAggregateFunctionResult.get(i).getText(),
+                    userInfo.get(i).toString().replaceAll("[',]", "").trim());
+        }
     }
 
 }
-
-
-
