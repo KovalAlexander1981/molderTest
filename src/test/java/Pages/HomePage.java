@@ -60,9 +60,7 @@ public class HomePage extends BasePage {
                 userData.get(4).toString()+" "+
                 userData.get(5).toString()+" "+
                 userData.get(6).toString()+")";
-        String queryJS = "window.editor.setValue(\"" + newUserQuery + ";\")";
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript(queryJS);
+        sendQuery(newUserQuery);
         runSQLButton.click();
         Assert.assertEquals(changeDataBaseLabel.getText(), "You have made changes to the database. Rows affected: 1",
                 "New user  was not added to the base");
@@ -79,9 +77,7 @@ public class HomePage extends BasePage {
                 columnName.get(5).toString()+userData.get(5).toString()+" "+
                 columnName.get(6).toString()+userData.get(6).toString()+"" +
                 " Where "+columnName.get(0).toString()+userData.get(0).toString().replaceAll("[',]", "").trim()+"";
-        String queryJS = "window.editor.setValue(\"" + newUserQuery + ";\")";
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript(queryJS);
+        sendQuery(newUserQuery);
         runSQLButton.click();
         Assert.assertEquals(changeDataBaseLabel.getText(), "You have made changes to the database. Rows affected: 1", "User data was not updated in the base");
         return this;
