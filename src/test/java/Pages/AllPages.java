@@ -3,10 +3,10 @@ package Pages;
 
 public class AllPages {
 
-        public  HomePage homePage;
+        public  FinanceStockPage financeStockPage;
 
         public  AllPages() {
-            homePage = new HomePage();
+            financeStockPage = new FinanceStockPage();
         }
     }
 

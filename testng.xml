@@ -5,9 +5,9 @@
         <listener class-name="Helpers.AnnotationTransformer"/>
         <listener class-name="Helpers.StatusTestsListener"/>
     </listeners>
-    <test name="sqlW3Test">
+    <test name="yahoo">
         <classes>
-            <class name="Tests.MainFlowTest"/>
+            <class name="Tests.HistoricalDateTest"/>
 
         </classes>
     </test>
